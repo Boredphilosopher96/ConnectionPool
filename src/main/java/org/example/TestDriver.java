@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class TestDriver {
     static class ConnectionPoolTest extends Thread {
-        private final String dbUrl = "jdbc:postgresql://localhost:5432/sumukhnitundila";
         DatabaseConnectionPool pool;
 
         public ConnectionPoolTest() {
+            String dbUrl = "jdbc:postgresql://localhost:5432/sumukhnitundila";
             this.pool = new DatabaseConnectionPool(50, dbUrl);
         }
 
