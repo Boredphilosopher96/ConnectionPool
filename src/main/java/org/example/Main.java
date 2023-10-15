@@ -1,17 +1,9 @@
 package org.example;
 
-import java.io.PrintWriter;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.postgresql.*;
-
 public class Main {
-    Logger logger = Logger.getLogger(toString());
-
     public static void main(String[] args) {
         try {
             TestDriver td = new TestDriver();

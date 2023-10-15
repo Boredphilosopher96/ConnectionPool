@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TestDriver {
-    class ConnectionPoolTest extends Thread {
+    static class ConnectionPoolTest extends Thread {
         private final String dbUrl = "jdbc:postgresql://localhost:5432/sumukhnitundila";
         DatabaseConnectionPool pool;
 

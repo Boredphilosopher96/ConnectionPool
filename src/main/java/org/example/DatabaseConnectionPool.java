@@ -1,7 +1,5 @@
 package org.example;
 
-import org.postgresql.jdbc2.optional.ConnectionPool;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,7 +30,7 @@ public class DatabaseConnectionPool {
         }
     }
 
-    public int getMaxPoolSize() throws PoolException {
+    public int getMaxPoolSize() {
         return this.blockingQueue.getSize();
     }
 
