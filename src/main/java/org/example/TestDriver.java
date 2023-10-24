@@ -5,21 +5,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TestDriver {
-    static class ConnectionPoolTest extends Thread {
-        DatabaseConnectionPool pool;
-
-        public ConnectionPoolTest() {
-            String dbUrl = "jdbc:postgresql://localhost:5432/sumukhnitundila";
-            this.pool = new DatabaseConnectionPool(50, dbUrl);
-        }
+    String dbUrl = "jdbc:postgresql://localhost:5432/sumukhnitundila";
+    DatabaseConnectionPool pool = new DatabaseConnectionPool(25, dbUrl);
+    class ConnectionPoolTest extends Thread {
 
         @Override
         public void run() {
-            try (Connection connection = pool.getConnection()) {
+            try  {
+                Connection connection = pool.getConnection();
                 System.out.println("Running thread : " + this.getName());
-                connection.prepareStatement("SELECT pg_sleep(100)").execute();
+                connection.prepareStatement("SELECT pg_sleep(10)").execute();
                 pool.putConnection(connection);
-            } catch (SQLException | PoolException e) {
+            } catch (SQLException | PoolException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -28,7 +25,7 @@ public class TestDriver {
     public void testConnectionPool() throws InterruptedException {
         long startTime = System.currentTimeMillis();
         ArrayList<Thread> threadList = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 50; i++) {
             Thread t1 = new ConnectionPoolTest();
             t1.setName("Thread " + i);
             threadList.add(t1);

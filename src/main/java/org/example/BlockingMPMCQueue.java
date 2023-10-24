@@ -1,32 +1,38 @@
 package org.example;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
+
 public class BlockingMPMCQueue<T> {
-    private final Object[] queue;
-    private int left = 0, right = 0, numElements = 0;
+    private final Deque<T> queue;
+    private int originalSize = 0;
 
     public BlockingMPMCQueue(int size) {
-        this.queue = new Object[size];
+        this.queue = new ArrayDeque<>(size);
+        this.originalSize = size;
     }
 
-    public synchronized void offer(Object value) throws PoolException {
-        if (numElements == this.getSize()) {
-            throw new PoolException("Queue is full");
+    public synchronized void offer(T value) throws InterruptedException {
+        while (this.getSize() == this.originalSize) {
+            wait();
         }
-        queue[(this.right++) % this.getSize()] = value;
-        this.numElements++;
+        this.queue.offer(value);
+        notify();
     }
 
-    @SuppressWarnings("unchecked")
-    public synchronized T poll() throws ClassCastException, PoolException {
-        if (numElements == 0) {
-            throw new PoolException("Queue is empty");
+    public synchronized T poll() throws ClassCastException, InterruptedException {
+        while (this.getSize() == 0) {
+            wait();
         }
-        this.numElements--;
-        return (T) queue[(this.left++) % this.getSize()];
+
+        T polledElement = this.queue.poll();
+        notify();
+        return polledElement;
     }
 
 
     public int getSize() {
-        return this.queue.length;
+        return this.queue.size();
     }
 }
