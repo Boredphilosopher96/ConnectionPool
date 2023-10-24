@@ -2,11 +2,10 @@ package org.example;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.LinkedList;
 
 public class BlockingMPMCQueue<T> {
     private final Deque<T> queue;
-    private int originalSize = 0;
+    private final int originalSize;
 
     public BlockingMPMCQueue(int size) {
         this.queue = new ArrayDeque<>(size);
